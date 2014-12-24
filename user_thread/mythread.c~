@@ -10,9 +10,8 @@ struct queue;
 volatile int totalcount=0,count=0;
 volatile int flag=0;
 volatile int ide=1000;
+//states running =1 ready=2 blocked=3 terminated =4
 ucontext_t cont1;
-
-//data structure used for thread
 typedef struct Thread{
 	ucontext_t mycontext;
 	int id; //for identification of thread
@@ -89,6 +88,7 @@ Thread *deList(_list *q)
 	if(q->first == NULL  )
 	{
 		printf("list is empty");
+		//setcontext(&(runningT->mycontext));
 	}
 	else if(q->first==q->last )
 	{
@@ -109,6 +109,9 @@ Thread *deList(_list *q)
 	}
 		
 }
+
+
+
 
 
 queue* createQueue(){
@@ -284,13 +287,13 @@ int sizeOfQueue(queue *q)
 
 void MyThreadInit(void(*start_funct)(void *), void *args)
 {
-	
+	//printf("entered My thread init \n");
 	if(flag==1)
 	{
 		return; //should return as init is already called by the function
 	}
 	flag=1;
-	
+	//++totalcount;
 	initContext= (ucontext_t *)calloc(1,sizeof(ucontext_t));
 	
 	readyQueue = createQueue();	
@@ -298,7 +301,6 @@ void MyThreadInit(void(*start_funct)(void *), void *args)
 	
 	Thread *_mainThread;
 	_mainThread =(Thread *) calloc(1,sizeof (Thread));
-	
 	//creating a context
 	getcontext( &(_mainThread->mycontext) );
         _mainThread->mycontext.uc_link=NULL;
@@ -434,6 +436,20 @@ int MyThreadJoin(void * childT)
 void MyThreadJoinAll(void)
 {
 	
+	/*if(runningT==initT)
+	{
+		if(initT->childrenQ->first==NULL)
+			return;
+		else 
+		{
+			runningT->join=2;
+			buffer=runningT;
+			insertInQueue(blockedQueue,buffer);
+			runningT=deQueue(readyQueue);
+			swapcontext(&(buffer->mycontext),&(runningT->mycontext));
+			return;
+		}
+	}*/
 	if (runningT->childrenQ->first==NULL) //indicates child thread is already terminated thread
 	{
 		return;
@@ -456,6 +472,15 @@ void MyThreadExit(void)
 	int decision,test;
 	buffer=runningT;
 	
+	/*if( runningT==initT)
+	{
+		//runningT=deQueue(readyQueue);
+		//printf("the new runnint thread is %d \n",runningT->id);
+		//printf("shit case1 for %d \n",runningT->id);
+		setcontext(initContext);
+		return;		
+	}*/	
+	
 	if(runningT->parent->join ==0)
 	{
 		
@@ -467,7 +492,7 @@ void MyThreadExit(void)
 			free(buffer);
 			setcontext(initContext); 
 		}	
-		
+		//printf("the new running thread is %d \n",runningT->id);
 		free(buffer);
 		setcontext(&(runningT->mycontext));
 	}
@@ -501,7 +526,7 @@ void MyThreadExit(void)
 		--(runningT->parent->numChildWaiting);
 		if(runningT->parent->childrenQ->first==NULL)
 		{
-			
+			//printf("the children queue is empty \n");
 			runningT->parent->join=0;
 			deQueueParentBlocked(blockedQueue,runningT->parent,runningT);
 		}	
@@ -511,7 +536,7 @@ void MyThreadExit(void)
 			//free(buffer);
 			setcontext(initContext); 
 		}	
-		
+		//printf("the new running thread is %d \n",runningT->id);
 		free(buffer);
 		setcontext(&(runningT->mycontext));
 	}

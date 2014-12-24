@@ -1,0 +1,9 @@
+1) From man pages of system calls,signals and environ
+
+2) From the stackoverflow question : 
+http://stackoverflow.com/questions/26328010/bad-file-descriptor-error-when-implementing-piping-in-c?noredirect=1#comment41349652_26328010
+
+3)Outline from 
+https://github.com/mycoy/NCSU_CSC501OS/tree/master/P2
+
+4)http://www.cs.loyola.edu/~jglenn/702/S2005/Examples/dup2.html
