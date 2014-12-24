@@ -1,0 +1,5 @@
+References used:
+
+1)http://www.evanjones.ca/software/threading.html -helpful for creating threads
+
+2)https://github.com/soniaghanekar/Threading-library/tree/master/src - for queue structures 
