@@ -1,0 +1,15 @@
+1.) Use the code from hello.c sample program as a references.
+
+2.) Used the demo file system available in this link as a reference
+http://www.cs.nmsu.edu/~pfeiffer/fuse-tutorial/
+
+3) The data structure for N-ary tree was taken from stackoverflow suggestions.
+http://stackoverflow.com/questions/189855/n-ary-trees-in-c  (the second answer)
+
+4) Discussed the problem solving techniques with fellow batchmates : Sai Krishna Teja Bobba, Aditya Matukumalli, Smruthi
+
+5) Referenced github code for some functions: 
+https://github.com/mycoy/NCSU_CSC501OS/blob/master/P4/ramdisk.c
+
+6) Fuse tutorials from :
+http://fuse.sourceforge.net/
